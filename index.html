@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--
+    The Content Security Policy limits what this page can do.
+    Scripts and styles load only from this site.
+    Network requests go only to the Ruuvi Cloud API.
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://network.ruuvi.com; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Ruuvi Cloud API Token Creator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>Ruuvi Cloud API Token Creator</h1>
+    <p class="lead">
+      Create a bearer token for the Ruuvi Cloud User API.
+      All code runs in your browser. The page sends requests only to
+      <code>https://network.ruuvi.com</code>.
+    </p>
+
+    <section id="step-register" aria-labelledby="h-register">
+      <h2 id="h-register"><span class="num">1</span> Request a verification code</h2>
+      <form id="form-register" novalidate>
+        <label for="email">Ruuvi account email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+        <button type="submit">Send code</button>
+      </form>
+      <p class="hint">Ruuvi Cloud sends a short verification code to this email.</p>
+    </section>
+
+    <section id="step-verify" aria-labelledby="h-verify" hidden>
+      <h2 id="h-verify"><span class="num">2</span> Enter the verification code</h2>
+      <form id="form-verify" novalidate>
+        <label for="code">Verification code</label>
+        <input id="code" name="code" type="text" autocomplete="one-time-code"
+               autocapitalize="characters" spellcheck="false" required>
+        <button type="submit">Get token</button>
+      </form>
+      <p class="hint">
+        Code sent to <strong id="sent-to"></strong>.
+        <button type="button" id="restart" class="link">Use a different email</button>
+      </p>
+    </section>
+
+    <section id="step-token" aria-labelledby="h-token" hidden>
+      <h2 id="h-token"><span class="num">3</span> Your access token</h2>
+      <p class="hint">Token for <strong id="token-email"></strong>.</p>
+      <div class="token-box">
+        <textarea id="token" readonly rows="4" spellcheck="false" aria-label="Access token"></textarea>
+        <button type="button" id="copy">Copy</button>
+      </div>
+      <p class="hint">Send it in the request header:</p>
+      <pre><code>Authorization: Bearer <span id="token-inline">TOKEN</span></code></pre>
+      <p class="warn">
+        Keep the token secret. It gives full access to your Ruuvi Cloud account.
+        This page does not save the token. When you close the page, the token is gone from here.
+      </p>
+    </section>
+
+    <p id="status" role="status" aria-live="polite"></p>
+
+    <footer>
+      <p>
+        This tool is not made by Ruuvi.
+        API reference: <a href="https://github.com/ruuvi/ruuvi.cloudapi.yaml" rel="noopener noreferrer">ruuvi/ruuvi.cloudapi.yaml</a>.
+        Source code of this page: <a id="source-link" href="https://github.com/" rel="noopener noreferrer">GitHub</a>.
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
