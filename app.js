@@ -23,7 +23,6 @@ const els = {
   copy: $("copy"),
   restart: $("restart"),
   status: $("status"),
-  sourceLink: $("source-link"),
 };
 
 // Error messages for the error codes in the Ruuvi Cloud API spec.
@@ -161,14 +160,3 @@ els.restart.addEventListener("click", () => {
   setStatus("");
   els.email.focus();
 });
-
-// On GitHub Pages (USER.github.io/REPO/), link to the source repository.
-(function setSourceLink() {
-  const host = location.hostname;
-  if (!host.endsWith(".github.io")) return;
-  const user = host.slice(0, -".github.io".length);
-  const repo = location.pathname.split("/").filter(Boolean)[0];
-  els.sourceLink.href = repo
-    ? `https://github.com/${user}/${repo}`
-    : `https://github.com/${user}/${host}`;
-})();
